@@ -7,21 +7,21 @@ import { ClientCreateDTO } from './dto/client.create.dto';
 @Controller("client")
 export class ClientController {
     constructor(
-        private readonly contractService: ClientService
+        private readonly clientService: ClientService
     ) { }
 
     @Post()
     public async create(@Body() clientCreateDTO: ClientCreateDTO) {
-        await this.contractService.create(clientCreateDTO);
+        await this.clientService.create(clientCreateDTO);
     }
 
     @Get()
     public async get() {
-        return await this.contractService.get();
+        return await this.clientService.get();
     }
 
     @Get(":id")
     public async getId(@Param("id") id: string) {
-        return await this.contractService.getId(+id);
+        return await this.clientService.getId(+id);
     }
 }
