@@ -1,3 +1,4 @@
+import { ContractService } from './contract.service';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContractEntity } from './contract.entity';
@@ -7,6 +8,8 @@ import { ContractEntity } from './contract.entity';
         TypeOrmModule.forFeature([ContractEntity])
     ],
     controllers: [],
-    providers: [],
+    providers: [
+        ContractService
+    ],
 })
 export class ContractModule { }
