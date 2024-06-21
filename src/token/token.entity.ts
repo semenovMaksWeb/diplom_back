@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { UserEntity } from 'src/user/user.entity';
 @Entity()
 export class TokenEntity {
@@ -14,6 +14,6 @@ export class TokenEntity {
     @Column({ type: 'timestamp', nullable: false })
     date: Date;
 
-    @ManyToMany(() => UserEntity, (user) => user.id)
-    user: UserEntity[];
+    @ManyToOne(() => UserEntity, (user) => user.id)
+    user: UserEntity;
 }

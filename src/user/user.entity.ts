@@ -3,9 +3,8 @@ import {
     Column,
     PrimaryGeneratedColumn,
     CreateDateColumn,
-    ManyToMany,
+    OneToMany,
 } from 'typeorm';
-import { JoinTable } from 'typeorm';
 import { TokenEntity } from '../token/token.entity';
 
 @Entity()
@@ -25,7 +24,6 @@ export class UserEntity {
     @Column({ nullable: false })
     password: string;
 
-    @ManyToMany(() => TokenEntity, (token) => token.id)
-    @JoinTable({ name: 'user_token' })
+    @OneToMany(() => TokenEntity, (token) => token.id)
     token: TokenEntity[];
 }
