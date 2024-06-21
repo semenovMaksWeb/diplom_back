@@ -17,10 +17,7 @@ export class ContractController {
     }
 
     @Get()
-    public async get(
-        @Query('client_id') client_id: string,
-        @Query('active') active: boolean
-    ) {
-        await this.contractService.getWhereClientId(+client_id, active);
+    public async get(@Query('client_id') client_id: string) {
+        return await this.contractService.getWhereClientId(+client_id);
     }
 }

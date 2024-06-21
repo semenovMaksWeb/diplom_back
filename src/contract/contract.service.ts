@@ -17,11 +17,8 @@ export class ContractService {
         this.contractRepository.save(contractEntity);
     }
 
-    public async getWhereClientId(clientId: number, active: boolean = false): Promise<ContractEntity[]> {
+    public async getWhereClientId(clientId: number): Promise<ContractEntity[]> {
         const where: any = { client: { id: clientId } };
-        if (active) {
-            where.date_end = LessThanOrEqual(new Date());
-        }
         return await this.contractRepository.find({ where: where });
     }
 
