@@ -1,5 +1,5 @@
 import { ContractEntity } from "src/contract/contract.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("client")
 export class ClientEntity {
@@ -18,7 +18,8 @@ export class ClientEntity {
     @Column()
     telephone: string;
 
-    @OneToMany(() => ContractEntity, (contract) => contract.id)
-    сontract: ContractEntity[]
+    @ManyToOne(() => ContractEntity, (contract) => contract.id)
+    @JoinColumn({ name: "contract_id" })
+    contract: ContractEntity
 
 }

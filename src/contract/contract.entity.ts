@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ClientEntity } from "src/client/client.entity";
 
 @Entity("contract")
@@ -12,8 +12,10 @@ export class ContractEntity {
     @Column({ type: 'date', default: () => "CURRENT_DATE + INTERVAL '1 month'" })
     date_create_end: Date;
 
-    @ManyToOne(() => ClientEntity, (client) => client.id)
-    @JoinColumn({ name: "client_id" })
+    @OneToMany(() => ClientEntity, (client) => client.id)
     client: ClientEntity
+
+    @Column()
+    text: string
 
 }
