@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ClientService } from './client.service';
 import { ClientCreateDTO } from './dto/client.create.dto';
@@ -11,7 +11,7 @@ export class ClientController {
     ) { }
 
     @Post()
-    public async create(clientCreateDTO: ClientCreateDTO) {
+    public async create(@Body() clientCreateDTO: ClientCreateDTO) {
         await this.contractService.create(clientCreateDTO);
     }
 
