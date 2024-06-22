@@ -1,3 +1,5 @@
+import { DeveloperController } from './developer.controller';
+import { DeveloperService } from './developer.service';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DeveloperEntity } from './developer.entity';
@@ -6,7 +8,11 @@ import { DeveloperEntity } from './developer.entity';
     imports: [
         TypeOrmModule.forFeature([DeveloperEntity])
     ],
-    controllers: [],
-    providers: [],
+    controllers: [
+        DeveloperController
+    ],
+    providers: [
+        DeveloperService
+    ],
 })
 export class DeveloperModule { }

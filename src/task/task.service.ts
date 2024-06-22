@@ -21,4 +21,10 @@ export class TaskService {
         }
         return await this.taskRepository.save(taskEntity);
     }
+
+    public async get() {
+        return await this.taskRepository.find({
+            relations: ["client", "developer", "statusTask"]
+        });
+    }
 }

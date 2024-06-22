@@ -29,6 +29,6 @@ export class TaskEntity {
     @Column({ type: 'date', default: () => 'CURRENT_DATE' })
     date_create: Date;
 
-    @Column({ type: 'date' })
+    @Column({ type: 'date', nullable: true })
     date_end: Date;
 }

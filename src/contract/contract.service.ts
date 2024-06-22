@@ -19,7 +19,7 @@ export class ContractService {
 
     public async getWhereClientId(clientId: number): Promise<ContractEntity[]> {
         const where: any = { client: { id: clientId } };
-        return await this.contractRepository.find({ where: where });
+        return await this.contractRepository.find({ where: where, relations: ["client"] });
     }
 
     public async checkToDateEnd(id: number): Promise<boolean> {

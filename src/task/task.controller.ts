@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { TaskCreateDTO } from './dto/task.create.dto';
 import { TaskService } from './task.service';
@@ -11,7 +11,12 @@ export class TaskController {
         private readonly taskService: TaskService,
     ) { }
     @Post()
-    create(@Body() taskCreateDTO: TaskCreateDTO) {
-        this.taskService.create(taskCreateDTO);
+    public async create(@Body() taskCreateDTO: TaskCreateDTO) {
+        return await this.taskService.create(taskCreateDTO);
+    }
+
+    @Get()
+    public async get() {
+        return await this.taskService.get();
     }
 }
