@@ -22,9 +22,24 @@ export class TaskService {
         return await this.taskRepository.save(taskEntity);
     }
 
-    public async get() {
+    public async get(statusId: number, clientId: number, developerId: number) {
         return await this.taskRepository.find({
-            relations: ["client", "developer", "statusTask"]
+            relations: ["client", "developer", "statusTask"],
+            where: this.genetatorWhereGet(statusId, clientId, developerId)
         });
+    }
+
+    private genetatorWhereGet(statusId: number, clientId: number, developerId: number) {
+        const where: any = {};
+        if (!Number.isNaN(statusId)) {
+            where.statusTask = { id: statusId }
+        }
+        if (!Number.isNaN(clientId)) {
+            where.client = { id: clientId }
+        }
+        if (!Number.isNaN(developerId)) {
+            where.developer = { id: developerId }
+        }
+        return where;
     }
 }

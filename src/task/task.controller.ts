@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { TaskCreateDTO } from './dto/task.create.dto';
 import { TaskService } from './task.service';
 
@@ -16,7 +16,17 @@ export class TaskController {
     }
 
     @Get()
-    public async get() {
-        return await this.taskService.get();
+    @ApiQuery({ name: 'status_id', required: false })
+    @ApiQuery({ name: 'client_id', required: false })
+    @ApiQuery({ name: 'developer_id', required: false })
+    public async get(
+        @Query("status_id")
+        statusId?: string,
+        @Query("client_id")
+        clientId?: string,
+        @Query("developer_id")
+        developerId?: string
+    ) {
+        return await this.taskService.get(+statusId, +clientId, +developerId);
     }
 }
