@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { DeveloperService } from './developer.service';
 import { DeveloperCreateDTO } from './dto/developer.create.dto';
@@ -15,5 +15,10 @@ export class DeveloperController {
         @Body() developerCreateDTO: DeveloperCreateDTO
     ) {
         return await this.developerService.create(developerCreateDTO)
+    }
+
+    @Get()
+    public async get() {
+        return await this.developerService.get();
     }
 }

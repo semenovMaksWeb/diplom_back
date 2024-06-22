@@ -14,4 +14,7 @@ export class DeveloperService {
     public async create(developerCreateDTO: DeveloperCreateDTO) {
         return await this.developerRepository.save(developerCreateDTO);
     }
+    public async get() {
+        return await this.developerRepository.find();
+    }
 }
