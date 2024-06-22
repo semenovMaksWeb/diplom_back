@@ -1,3 +1,4 @@
+import { StatusTaskService } from './statustask.service';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StatusTaskEntity } from './statusTask.entity';
@@ -7,6 +8,8 @@ import { StatusTaskEntity } from './statusTask.entity';
         TypeOrmModule.forFeature([StatusTaskEntity])
     ],
     controllers: [],
-    providers: [],
+    providers: [
+        StatusTaskService,
+    ],
 })
 export class StatusTaskModule { }

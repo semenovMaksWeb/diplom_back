@@ -16,7 +16,7 @@ export class TaskEntity {
 
     @ManyToOne(() => ClientEntity, (client) => client.id)
     @JoinColumn({ name: "client_id" })
-    contract: ClientEntity
+    client: ClientEntity
 
     @ManyToOne(() => DeveloperEntity, (developer) => developer.id)
     @JoinColumn({ name: "developer_id" })

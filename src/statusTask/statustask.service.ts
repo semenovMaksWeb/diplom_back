@@ -1,0 +1,20 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { StatusTaskEntity } from './statusTask.entity';
+import { Repository } from 'typeorm';
+
+@Injectable()
+export class StatusTaskService {
+    constructor(
+        @InjectRepository(StatusTaskEntity)
+        private statusTaskRepository: Repository<StatusTaskEntity>,
+    ) {
+        const data = [
+            { id: 1, name: "Создана", description: "Задача созданная клиентом" },
+            { id: 2, name: "В работе", description: "Задача в ходе выполнение разработчиком" },
+            { id: 3, name: "В проверке", description: "Задача требует проверку клиентом" },
+            { id: 4 , name: "Выполнена", description: "Задача подверждена клиентом" },
+        ];
+        this.statusTaskRepository.save(data)
+    }
+}

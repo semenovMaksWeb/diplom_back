@@ -17,6 +17,7 @@ import { DatabaseConfig } from './lib/config/database.config';
     ClientModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+  ],
 })
 export class AppModule { }
