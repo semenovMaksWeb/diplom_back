@@ -54,7 +54,7 @@ export class AuthService {
             user.id,
             authAuthorizationDTO.isDeveloper
         );
-        await this.setToken(token, user);
+        await this.setToken(token, { user, isDeveloper: authAuthorizationDTO.isDeveloper });
         return token;
     }
 }

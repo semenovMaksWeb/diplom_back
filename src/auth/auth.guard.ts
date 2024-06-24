@@ -4,27 +4,37 @@ import {
   Inject,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { Reflector } from '@nestjs/core';
+import { TypeUserDecorator } from 'src/lib/decorator/user.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private reflector: Reflector,
   ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    try {
-      const request = context.switchToHttp().getRequest();
-      const { authorization }: any = request.headers;
+    const request = context.switchToHttp().getRequest();
+    const { authorization }: any = request.headers;
+    const typeUser = this.reflector.get<TypeUserDecorator>('type', context.getHandler());
 
-      if (!authorization || authorization.trim() === '') {
-        throw new UnauthorizedException('Please provide token');
-      }
-
-      const authToken = authorization.replace(/bearer/gim, '').trim();
-      const resp = await this.authService.getUser(authToken);
-      return true;
-    } catch (error) {
-      throw new ForbiddenException(error.message || 'session expired! Please sign In');
+    if (!typeUser) {
+      return;
     }
+
+    if (!authorization || authorization.trim() === '') {
+      throw new UnauthorizedException('Please provide token');
+    }
+
+    const authToken = authorization.replace(/bearer/gim, '').trim();
+    const resp: any = await this.authService.getUser(authToken);
+
+    if (typeUser == TypeUserDecorator.developer && !resp?.isDeveloper) {
+      throw new ForbiddenException("У вас нет прав на эти действия");
+    }
+
+    return true;
+
   }
 }
