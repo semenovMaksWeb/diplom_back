@@ -18,6 +18,9 @@ export class ClientEntity {
     @Column()
     telephone: string;
 
+    @Column({ default: "" })
+    password: string;
+
     @OneToMany(() => ContractEntity, (contract) => contract.id)
     contract: ContractEntity
 

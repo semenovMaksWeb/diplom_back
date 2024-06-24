@@ -14,5 +14,8 @@ import { DeveloperEntity } from './developer.entity';
     providers: [
         DeveloperService
     ],
+    exports: [
+        DeveloperService
+    ]
 })
 export class DeveloperModule { }

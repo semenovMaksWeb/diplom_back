@@ -17,4 +17,12 @@ export class DeveloperService {
     public async get() {
         return await this.developerRepository.find();
     }
+    public async findTflAndPassword(telephone: string, password: string) {
+        return await this.developerRepository.findOne({
+            where: {
+                telephone: telephone,
+                password: password
+            }
+        });
+    }
 }

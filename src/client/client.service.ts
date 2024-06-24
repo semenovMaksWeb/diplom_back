@@ -22,4 +22,12 @@ export class ClientService {
     public async get(): Promise<ClientEntity[]> {
         return await this.clientRepository.find();
     }
+    public async findTflAndPassword(telephone: string, password: string) {
+        return await this.clientRepository.findOne({
+            where: {
+                telephone: telephone,
+                password: password
+            }
+        });
+    }
 }

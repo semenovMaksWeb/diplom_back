@@ -16,4 +16,7 @@ export class DeveloperEntity {
 
     @Column()
     telephone: string;
+
+    @Column({ default: "" })
+    password: string;
 }
