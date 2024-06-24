@@ -15,23 +15,15 @@ export class AuthService {
     ) { }
 
     public async getUser(token: any) {
-        console.log(token.token);
-        console.log(await this.cacheManager.get(token));
         return await this.cacheManager.get(token);
     }
-    private async getToken(token: string): Promise<string> {
-        return await this.cacheManager.get(token);
-    }
+
     private async setToken(token: string, data: any) {
-        console.log(token, data);
         await this.cacheManager.set(token, data);
     }
     private generatorToken(tlf: string, password: string, id: number, isDeveloper: boolean): string {
         const string = `${new Date()} ${tlf} ${password} ${id} ${isDeveloper}}`;
-        console.log(process.env.JWT_SECRET_KEY);
-        console.log(string);
         const token = jwt.sign(string, process.env.JWT_SECRET_KEY);
-        console.log(token);
         return token;
     }
 
