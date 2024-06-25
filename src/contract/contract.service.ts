@@ -12,7 +12,6 @@ export class ContractService {
     ) { }
 
     public create(contractCreateDTO: ContractCreateDTO) {
-        // TODO право что разработчик а не клиент
         const contractEntity = { client: { id: contractCreateDTO.clientId } }
         this.contractRepository.save(contractEntity);
     }
@@ -22,10 +21,11 @@ export class ContractService {
         return await this.contractRepository.find({ where: where, relations: ["client"] });
     }
 
-    public async checkToDateEnd(id: number): Promise<boolean> {
-        const where: any = {
-            id: id, date_end: LessThanOrEqual(new Date())
+    public async get(clientId: number): Promise<ContractEntity[]> {
+        const where: any = {};
+        if (!isNaN(clientId)) {
+            where.client = { id: clientId }
         }
-        return (await this.contractRepository.find({ where: where })).length > 0;
+        return await this.contractRepository.find({ where, relations: ["client"] });
     }
 }   

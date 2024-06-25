@@ -29,10 +29,15 @@ export class AuthGuard implements CanActivate {
 
     const authToken = authorization.replace(/bearer/gim, '').trim();
     const resp: any = await this.authService.getUser(authToken);
+    
+    if (!resp) {
+      throw new ForbiddenException("Не валидный токен");
+    }
 
     if (typeUser == TypeUserDecorator.developer && !resp?.isDeveloper) {
       throw new ForbiddenException("У вас нет прав на эти действия");
     }
+    request.user = resp;
 
     return true;
 
