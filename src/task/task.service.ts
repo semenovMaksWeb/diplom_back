@@ -22,6 +22,13 @@ export class TaskService {
         return await this.taskRepository.save(taskEntity);
     }
 
+    public async getAll(statusId: number, clientId: number, developerId: number) {
+        return await this.taskRepository.find({
+            relations: ["client", "developer", "statusTask"],
+            where: this.genetatorWhereGet(statusId, clientId, developerId)
+        });
+    }
+
     public async get(statusId: number, clientId: number, developerId: number) {
         return await this.taskRepository.find({
             relations: ["client", "developer", "statusTask"],
