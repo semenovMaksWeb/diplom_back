@@ -6,8 +6,8 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { UserDecorator, TypeUserDecorator } from 'src/lib/decorator/user.decorator';
 
 @ApiTags("developer")
-@UseGuards(AuthGuard)
 @Controller("developer")
+@UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class DeveloperController {
     constructor(
@@ -22,6 +22,7 @@ export class DeveloperController {
         return await this.developerService.create(developerCreateDTO)
     }
 
+    @UserDecorator(TypeUserDecorator.client)
     @Get()
     public async get() {
         return await this.developerService.get();
