@@ -17,4 +17,8 @@ export class UserCreateDTO {
     @IsNotEmpty()
     @ApiProperty()
     telephone: string;
+
+    @IsNotEmpty()
+    @ApiProperty()
+    password: string;
 }
