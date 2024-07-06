@@ -14,6 +14,7 @@ export class StatusTaskService {
             { id: 2, name: "В работе", description: "Задача в ходе выполнение разработчиком" },
             { id: 3, name: "В проверке", description: "Задача требует проверку клиентом" },
             { id: 4 , name: "Выполнена", description: "Задача подверждена клиентом" },
+            { id: 5 , name: "Отмененна", description: "Задача отмененная клиентом" },
         ];
         this.statusTaskRepository.save(data)
     }

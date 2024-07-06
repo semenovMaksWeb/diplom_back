@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { TaskCreateDTO } from './dto/task.create.dto';
 import { TaskService } from './task.service';
@@ -48,7 +48,22 @@ export class TaskController {
         @Query("developer_id")
         developerId?: string,
     ) {
-        const user: ClientEntity = req?.user.user;       
+        const user: ClientEntity = req?.user.user;
         return await this.taskService.get(+statusId, user.id, +developerId);
+    }
+
+    @UserDecorator(TypeUserDecorator.client)
+    @Put()
+    @ApiQuery({ name: 'status_id', required: true })
+    @ApiQuery({ name: 'status_id', required: true })
+    public async updateStatus(
+        @Req() req: any,
+        @Query("status_id")
+        statusId?: string,
+        @Query("task_id")
+        taskId?: string,
+    ) {
+        const user: ClientEntity = req?.user.user;
+        return await this.taskService.updateStatus(+statusId, +taskId, user.id);
     }
 }

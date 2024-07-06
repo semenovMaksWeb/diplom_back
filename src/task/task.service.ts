@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TaskEntity } from './task.entity';
 import { Repository } from 'typeorm';
@@ -35,6 +35,71 @@ export class TaskService {
             where: this.genetatorWhereGet(statusId, clientId, developerId)
         });
     }
+
+    public async updateStatus(statusId: number, taskId: number, userId: number) {
+        const taks: TaskEntity = await this.getId(taskId);
+        if (taks.statusTask.id == taskId) {
+            throw new BadRequestException("Текущий статус задачи уже указан");
+        }
+        switch (statusId) {
+            case 1:
+                throw new BadRequestException("Нельзя изменить статус задачи на Создана");
+            case 2:
+                this.checkDeveloperTask(taks, userId)
+                break;
+            case 3:
+                this.checkDeveloperTask(taks, userId)
+                this.checkNotTaskStatus(taks, 2, "Нельзя изменить статус задачи на 'в проверке', если она не в статусе 'В работe'")
+                break;
+            case 4:
+                this.checkClientTask(taks, userId)
+                this.checkNotTaskStatus(taks, 3, "Нельзя изменить статус задачи на 'Выполнена', если она не в статусе 'В проверке'")
+                break;
+            case 5:
+                this.checkClientTask(taks, userId)
+                this.checkTaskStatus(taks, 3, "Нельзя изменить статус задачи на 'Отмененна', если она в статусе 'В проверке'");
+                this.checkTaskStatus(taks, 4, "Нельзя изменить статус задачи на 'Отмененна', если она в статусе 'Выполнена'");
+                break;
+        }
+        await this.taskRepository.save({ id: taskId, statusTask: { id: statusId } })
+    }
+
+
+    // проверка что статус не равен указанному
+    private checkNotTaskStatus(taks: TaskEntity, statusId: number, textError: string) {
+        if (taks.statusTask.id != statusId) {
+            throw new BadRequestException(textError);
+        }
+    }
+    // проверка что статус равен указанному
+    private checkTaskStatus(taks: TaskEntity, statusId: number, textError: string) {
+        if (taks.statusTask.id == statusId) {
+            throw new BadRequestException(textError);
+        }
+    }
+
+
+    // проверка что пользователь разработчик
+    private checkDeveloperTask(taks: TaskEntity, userId: number) {
+        if (taks.developer.id != userId) {
+            throw new BadRequestException("Только испольнитель может взять задачу в работу");
+        }
+    }
+
+    // проверка что пользователь клиент
+    private checkClientTask(taks: TaskEntity, userId: number) {
+        if (taks.client.id != userId) {
+            throw new BadRequestException("Только автор задачи может отметить выполненную задачу");
+        }
+    }
+
+    public async getId(id: number) {
+        return await this.taskRepository.findOne({
+            relations: ["client", "developer", "statusTask"],
+            where: { id: id }
+        });
+    }
+
 
     private genetatorWhereGet(statusId: number, clientId: number, developerId: number) {
         const where: any = {};

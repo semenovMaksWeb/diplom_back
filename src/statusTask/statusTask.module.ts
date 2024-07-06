@@ -1,4 +1,4 @@
-import { StatusTaskService } from './statustask.service';
+import { StatusTaskService } from './statusTask.service';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StatusTaskEntity } from './statusTask.entity';
