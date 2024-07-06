@@ -11,10 +11,10 @@ export class TaskService {
         private taskRepository: Repository<TaskEntity>,
     ) { }
 
-    public async create(taskCreateDTO: TaskCreateDTO) {
+    public async create(taskCreateDTO: TaskCreateDTO, userId: number) {
         const taskEntity = {
             statusTask: { id: 1 },
-            client: { id: taskCreateDTO.client_id },
+            client: { id: userId },
             developer: { id: taskCreateDTO.developer_id },
             message: taskCreateDTO.message,
             theme: taskCreateDTO.message

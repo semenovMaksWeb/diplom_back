@@ -17,8 +17,11 @@ export class TaskController {
 
     @UserDecorator(TypeUserDecorator.client)
     @Post()
-    public async create(@Body() taskCreateDTO: TaskCreateDTO) {
-        return await this.taskService.create(taskCreateDTO);
+    public async create(
+        @Req() req: any,
+        @Body() taskCreateDTO: TaskCreateDTO
+    ) {
+        return await this.taskService.create(taskCreateDTO, req.user.id);
     }
 
     @UserDecorator(TypeUserDecorator.developer)
