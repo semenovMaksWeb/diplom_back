@@ -5,6 +5,7 @@ import { TaskService } from './task.service';
 import { TypeUserDecorator, UserDecorator } from 'src/lib/decorator/user.decorator';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { ClientEntity } from 'src/client/client.entity';
+import { TaskUpdateDTO } from './dto/task.update.dto';
 
 @Controller("taks")
 @ApiTags("task")
@@ -58,7 +59,7 @@ export class TaskController {
     @UserDecorator(TypeUserDecorator.client)
     @Put()
     @ApiQuery({ name: 'status_id', required: true })
-    @ApiQuery({ name: 'status_id', required: true })
+    @ApiQuery({ name: 'task_id', required: true })
     public async updateStatus(
         @Req() req: any,
         @Query("status_id")
@@ -68,5 +69,13 @@ export class TaskController {
     ) {
         const user: ClientEntity = req?.user.user;
         return await this.taskService.updateStatus(+statusId, +taskId, user.id);
+    }
+
+    @UserDecorator(TypeUserDecorator.client)
+    @Put()
+    public async update(
+        @Body() taskUpdateDTO: TaskUpdateDTO
+    ) {
+        return await this.taskService.update(taskUpdateDTO);
     }
 }

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TaskEntity } from './task.entity';
 import { Repository } from 'typeorm';
 import { TaskCreateDTO } from './dto/task.create.dto';
+import { TaskUpdateDTO } from './dto/task.update.dto';
 
 @Injectable()
 export class TaskService {
@@ -113,5 +114,16 @@ export class TaskService {
             where.developer = { id: developerId }
         }
         return where;
+    }
+
+    public async update(taskUpdateDTO: TaskUpdateDTO) {
+        return await this.taskRepository.save(
+            {
+                id: taskUpdateDTO.id,
+                theme: taskUpdateDTO.theme,
+                developer: { id: taskUpdateDTO.developer_id },
+                message: taskUpdateDTO.message
+            }
+        )
     }
 }
