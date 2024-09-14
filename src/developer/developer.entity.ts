@@ -1,22 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { UserEntity } from "src/auth/user.entity";
+import { Entity } from "typeorm";
 
 @Entity("developer")
-export class DeveloperEntity {
-    @PrimaryGeneratedColumn("uuid")
-    id: number;
-
-    @Column()
-    name: string;
-
-    @Column()
-    surname: string;
-
-    @Column()
-    patronymic: string;
-
-    @Column()
-    telephone: string;
-
-    @Column({ default: "" })
-    password: string;
-}
+export class DeveloperEntity extends UserEntity { }
