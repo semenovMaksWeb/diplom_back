@@ -24,4 +24,12 @@ export class AuthController {
     ) {
         return await this.authService.getUser(token);
     }
+
+    @ApiQuery({ name: "token" })
+    @Get("exit")
+    public async exit(
+        @Query("token") token: string
+    ) {
+        await this.authService.deleteToken(token)
+    }
 }

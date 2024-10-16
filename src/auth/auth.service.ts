@@ -24,6 +24,11 @@ export class AuthService {
     private async setToken(token: string, data: any) {
         await this.cacheManager.set(token, data);
     }
+
+    public async deleteToken(token: string) {
+        await this.cacheManager.del(token);
+    }
+
     private generatorToken(tlf: string, password: string, id: number, isDeveloper: boolean): string {
         const string = `${new Date()} ${tlf} ${password} ${id} ${isDeveloper}}`;
         const token = jwt.sign(string, process.env.JWT_SECRET_KEY);
@@ -64,7 +69,7 @@ export class AuthService {
     public async hashPassword(password: string): Promise<string> {
         return await bcrypt.hash(password, 10);
     }
-    
+
     public async checkPassword(password: string, hashPassword: string): Promise<boolean> {
         return await bcrypt.compare(password, hashPassword);
     }
