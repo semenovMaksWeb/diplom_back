@@ -18,7 +18,7 @@ export class AuthController {
     }
 
     @ApiQuery({ name: "token" })
-    @Get("test")
+    @Get("getProfile")
     public async test(
         @Query("token") token: string
     ) {
