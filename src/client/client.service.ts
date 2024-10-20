@@ -20,11 +20,11 @@ export class ClientService {
     }
 
     public async getId(id: number): Promise<ClientEntity> {
-        return await this.clientRepository.findOne({ where: { id } });
+        return await this.clientRepository.findOne({ where: { id }, select: ["id", "name", "surname", "patronymic", "telephone"] });
     }
 
     public async get(): Promise<ClientEntity[]> {
-        return await this.clientRepository.find();
+        return await this.clientRepository.find({ select: ["id", "name", "surname", "patronymic", "telephone"] });
     }
     public async findTflAndPassword(telephone: string, password: string) {
         const user = await this.clientRepository.findOne({

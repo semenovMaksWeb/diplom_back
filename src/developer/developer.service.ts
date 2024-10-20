@@ -22,7 +22,7 @@ export class DeveloperService {
         return await this.developerRepository.save(developerCreateDTO);
     }
     public async get() {
-        return await this.developerRepository.find();
+        return await this.developerRepository.find({ select: ["id", "name", "surname", "patronymic", "telephone"] });
     }
     public async findTflAndPassword(telephone: string, password: string) {
         const user = await this.developerRepository.findOne({
