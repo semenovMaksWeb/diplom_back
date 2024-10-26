@@ -19,7 +19,7 @@ export class ClientService {
         return await this.clientRepository.save(clientCreateDTO);
     }
 
-    public async getId(id: number): Promise<ClientEntity> {
+    public async getId(id: string): Promise<ClientEntity> {
         return await this.clientRepository.findOne({ where: { id }, select: ["id", "name", "surname", "patronymic", "telephone"] });
     }
 

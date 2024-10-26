@@ -12,7 +12,7 @@ export class TaskService {
         private taskRepository: Repository<TaskEntity>,
     ) { }
 
-    public async create(taskCreateDTO: TaskCreateDTO, userId: number) {
+    public async create(taskCreateDTO: TaskCreateDTO, userId: string) {
         const taskEntity = {
             statusTask: { id: 1 },
             client: { id: userId },
@@ -23,21 +23,21 @@ export class TaskService {
         return await this.taskRepository.save(taskEntity);
     }
 
-    public async getAll(statusId: number, clientId: number, developerId: number) {
+    public async getAll(statusId: number, clientId: string, developerId: string) {
         return await this.taskRepository.find({
             relations: ["client", "developer", "statusTask"],
             where: this.genetatorWhereGet(statusId, clientId, developerId)
         });
     }
 
-    public async get(statusId: number, clientId: number, developerId: number) {
+    public async get(statusId: number, clientId: string, developerId: string) {
         return await this.taskRepository.find({
             relations: ["client", "developer", "statusTask"],
             where: this.genetatorWhereGet(statusId, clientId, developerId)
         });
     }
 
-    public async updateStatus(statusId: number, taskId: number, userId: number) {
+    public async updateStatus(statusId: number, taskId: number, userId: string) {
         const taks: TaskEntity = await this.getId(taskId);
         if (taks.statusTask.id == taskId) {
             throw new BadRequestException("Текущий статус задачи уже указан");
@@ -81,14 +81,14 @@ export class TaskService {
 
 
     // проверка что пользователь разработчик
-    private checkDeveloperTask(taks: TaskEntity, userId: number) {
+    private checkDeveloperTask(taks: TaskEntity, userId: string) {
         if (taks.developer.id != userId) {
             throw new BadRequestException("Только испольнитель может взять задачу в работу");
         }
     }
 
     // проверка что пользователь клиент
-    private checkClientTask(taks: TaskEntity, userId: number) {
+    private checkClientTask(taks: TaskEntity, userId: string) {
         if (taks.client.id != userId) {
             throw new BadRequestException("Только автор задачи может отметить выполненную задачу");
         }
@@ -102,7 +102,7 @@ export class TaskService {
     }
 
 
-    private genetatorWhereGet(statusId: number, clientId: number, developerId: number) {
+    private genetatorWhereGet(statusId: number, clientId: string, developerId: string) {
         const where: any = {};
         if (!Number.isNaN(statusId)) {
             where.statusTask = { id: statusId }

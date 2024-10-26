@@ -38,7 +38,7 @@ export class TaskController {
         @Query("developer_id")
         developerId?: string
     ) {
-        return await this.taskService.getAll(+statusId, +clientId, +developerId);
+        return await this.taskService.getAll(+statusId, clientId, developerId);
     }
 
     @UserDecorator(TypeUserDecorator.client)
@@ -53,7 +53,7 @@ export class TaskController {
         developerId?: string,
     ) {
         const user: ClientEntity = req?.user.user;
-        return await this.taskService.get(+statusId, user.id, +developerId);
+        return await this.taskService.get(+statusId, user.id, developerId);
     }
 
     @UserDecorator(TypeUserDecorator.client)

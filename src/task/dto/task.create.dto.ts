@@ -12,5 +12,5 @@ export class TaskCreateDTO {
 
     @IsNotEmpty()
     @ApiProperty()
-    developer_id: number;
+    developer_id: string;
 }

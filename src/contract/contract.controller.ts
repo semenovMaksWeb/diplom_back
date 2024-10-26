@@ -1,6 +1,6 @@
 
 import { Body, Controller, Get, Headers, Post, Query, Req, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ContractService } from './contract.service';
 import { ContractCreateDTO } from './dto/contract.create.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -24,16 +24,22 @@ export class ContractController {
 
     @UserDecorator(TypeUserDecorator.developer)
     @Get()
+    @ApiQuery({ name: 'client_id', required: false })
     public async get(
-        @Query("client_id") clientId: string
+        @Query("client_id") clientId?: string,
+        @Query("active") active?: boolean
     ) {
-        return await this.contractService.get(+clientId);
+        return await this.contractService.get(clientId, active);
     }
 
     @UserDecorator(TypeUserDecorator.client)
     @Get("/id")
-    public async getWhereClientId(@Req() req: any) {
+    public async getWhereClientId(
+        @Req() req: any,
+        @Query("active") active?: boolean
+    ) {
         const user: ClientEntity = req?.user.user;
-        return user;
+        console.log(user);
+        return await this.contractService.get(user.id.toString(), active);
     }
 }

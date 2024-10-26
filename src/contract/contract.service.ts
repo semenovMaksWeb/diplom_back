@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LessThanOrEqual, Repository } from 'typeorm';
 import { ContractEntity } from './contract.entity';
 import { ContractCreateDTO } from './dto/contract.create.dto';
+import { log } from 'console';
 
 @Injectable()
 export class ContractService {
@@ -15,17 +16,23 @@ export class ContractService {
         const contractEntity = { client: { id: contractCreateDTO.clientId } }
         this.contractRepository.save(contractEntity);
     }
-
-    public async getWhereClientId(clientId: number): Promise<ContractEntity[]> {
-        const where: any = { client: { id: clientId } };
-        return await this.contractRepository.find({ where: where, relations: ["client"] });
+    private convertContract(contractEntity: ContractEntity[]) {
+        const result = [];
+        for (const e of contractEntity) {
+            result.push({ id: e.id, date_end: e.date_end, date_create: e.date_create, id_client: e.client.id, name_client: e.client.name })
+        }
+        return result;
     }
 
-    public async get(clientId: number): Promise<ContractEntity[]> {
+    public async get(clientId: string, active: boolean) {
         const where: any = {};
-        if (!isNaN(clientId)) {
+        if (!clientId) {
             where.client = { id: clientId }
         }
-        return await this.contractRepository.find({ where, relations: ["client"] });
+        if (active) {
+            where.date_end = "CURRENT_DATE";
+        }
+        const resultBd = await this.contractRepository.find({ where, relations: ["client"] });
+        return this.convertContract(resultBd);
     }
 }   
