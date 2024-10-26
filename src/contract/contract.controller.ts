@@ -27,7 +27,7 @@ export class ContractController {
     @ApiQuery({ name: 'client_id', required: false })
     public async get(
         @Query("client_id") clientId?: string,
-        @Query("active") active?: boolean
+        @Query("active") active?: string
     ) {
         return await this.contractService.get(clientId, active);
     }
@@ -36,7 +36,7 @@ export class ContractController {
     @Get("/id")
     public async getWhereClientId(
         @Req() req: any,
-        @Query("active") active?: boolean
+        @Query("active") active?: string
     ) {
         const user: ClientEntity = req?.user.user;
         console.log(user);

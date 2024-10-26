@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LessThanOrEqual, Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 import { ContractEntity } from './contract.entity';
 import { ContractCreateDTO } from './dto/contract.create.dto';
-import { log } from 'console';
 
 @Injectable()
 export class ContractService {
@@ -24,14 +23,21 @@ export class ContractService {
         return result;
     }
 
-    public async get(clientId: string, active: boolean) {
+    public async get(clientId: string, active: string) {
         const where: any = {};
-        if (!clientId) {
+        if (clientId) {
             where.client = { id: clientId }
         }
-        if (active) {
-            where.date_end = "CURRENT_DATE";
+
+        console.log(active);
+
+        if (active == "true") {
+            console.log("какого хуЯ?");
+
+            where.date_end = Raw((alias: string) => `${alias} > NOW()`)
         }
+        console.log(where);
+
         const resultBd = await this.contractRepository.find({ where, relations: ["client"] });
         return this.convertContract(resultBd);
     }
