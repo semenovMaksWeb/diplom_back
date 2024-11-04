@@ -11,9 +11,9 @@ export class ContractService {
         private contractRepository: Repository<ContractEntity>,
     ) { }
 
-    public create(contractCreateDTO: ContractCreateDTO) {
+    public async create(contractCreateDTO: ContractCreateDTO) {
         const contractEntity = { client: { id: contractCreateDTO.clientId } }
-        this.contractRepository.save(contractEntity);
+        return await this.contractRepository.save(contractEntity);
     }
     private convertContract(contractEntity: ContractEntity[]) {
         const result = [];
@@ -29,14 +29,9 @@ export class ContractService {
             where.client = { id: clientId }
         }
 
-        console.log(active);
-
         if (active == "true") {
-            console.log("какого хуЯ?");
-
             where.date_end = Raw((alias: string) => `${alias} > NOW()`)
         }
-        console.log(where);
 
         const resultBd = await this.contractRepository.find({ where, relations: ["client"] });
         return this.convertContract(resultBd);

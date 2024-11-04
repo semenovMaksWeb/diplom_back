@@ -19,7 +19,7 @@ export class ContractController {
     @UserDecorator(TypeUserDecorator.developer)
     @Post()
     public async save(@Body() contractCreateDTO: ContractCreateDTO) {
-        await this.contractService.create(contractCreateDTO);
+        return await this.contractService.create(contractCreateDTO);
     }
 
     @UserDecorator(TypeUserDecorator.developer)
@@ -39,7 +39,6 @@ export class ContractController {
         @Query("active") active?: string
     ) {
         const user: ClientEntity = req?.user.user;
-        console.log(user);
         return await this.contractService.get(user.id.toString(), active);
     }
 }

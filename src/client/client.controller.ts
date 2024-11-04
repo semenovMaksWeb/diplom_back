@@ -18,7 +18,7 @@ export class ClientController {
     @UserDecorator(TypeUserDecorator.developer)
     @Post()
     public async create(@Body() clientCreateDTO: ClientCreateDTO) {
-        await this.clientService.create(clientCreateDTO);
+        return await this.clientService.create(clientCreateDTO);
     }
 
     @UserDecorator(TypeUserDecorator.developer)
