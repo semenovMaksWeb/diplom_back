@@ -2,23 +2,23 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
 export class UserCreateDTO {
-    @IsNotEmpty()
+    @IsNotEmpty({ message: "Не указано имя клиента" })
     @ApiProperty()
     name: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: "Не указано фамилия клиента" })
     @ApiProperty()
     surname: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: "Не указано отчество клиента" })
     @ApiProperty()
     patronymic: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: "Не указано телефон клиента" })
     @ApiProperty()
     telephone: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: "Не указано пароль клиента" })
     @ApiProperty()
     password: string;
 }
