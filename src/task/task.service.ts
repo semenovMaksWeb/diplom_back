@@ -12,6 +12,15 @@ export class TaskService {
         private taskRepository: Repository<TaskEntity>,
     ) { }
 
+
+    private convertTask(taskEntity: TaskEntity[]) {
+        const result = [];
+        for (const e of taskEntity) {
+            result.push({ id: e.id, theme: e.theme, message: e.message, date_create: e.date_create, date_end: e.date_end, client_id: e.client.id, client_name: e.client.name, developer_id: e.developer.id, developer_name: e.developer.name, status_id: e.statusTask.id, status_name: e.statusTask.name })
+        }
+        return result;
+    }
+
     public async create(taskCreateDTO: TaskCreateDTO, userId: string) {
         const taskEntity = {
             statusTask: { id: 1 },
@@ -20,21 +29,25 @@ export class TaskService {
             message: taskCreateDTO.message,
             theme: taskCreateDTO.message
         }
+
+        console.log(taskEntity);
         return await this.taskRepository.save(taskEntity);
     }
 
     public async getAll(statusId: number, clientId: string, developerId: string) {
-        return await this.taskRepository.find({
+        const resBd = await this.taskRepository.find({
             relations: ["client", "developer", "statusTask"],
             where: this.genetatorWhereGet(statusId, clientId, developerId)
         });
+        return this.convertTask(resBd);
     }
 
     public async get(statusId: number, clientId: string, developerId: string) {
-        return await this.taskRepository.find({
+        const resBd = await this.taskRepository.find({
             relations: ["client", "developer", "statusTask"],
             where: this.genetatorWhereGet(statusId, clientId, developerId)
         });
+        return this.convertTask(resBd);
     }
 
     public async updateStatus(statusId: number, taskId: number, userId: string) {

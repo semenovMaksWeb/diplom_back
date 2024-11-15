@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { TaskCreateDTO } from './dto/task.create.dto';
 import { TaskService } from './task.service';
@@ -22,7 +22,10 @@ export class TaskController {
         @Req() req: any,
         @Body() taskCreateDTO: TaskCreateDTO
     ) {
-        return await this.taskService.create(taskCreateDTO, req.user.id);
+        if (req.user.isDeveloper) {
+            throw new BadRequestException("Администраторы не создают задачи");
+        }
+        return await this.taskService.create(taskCreateDTO, req.user.user.id);
     }
 
     @UserDecorator(TypeUserDecorator.developer)
