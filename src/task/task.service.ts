@@ -16,7 +16,7 @@ export class TaskService {
     private convertTask(taskEntity: TaskEntity[]) {
         const result = [];
         for (const e of taskEntity) {
-            result.push({ id: e.id, theme: e.theme, message: e.message, date_create: e.date_create, date_end: e.date_end, client_name: e.client.name, developer_name: e.developer.name, status_name: e.statusTask.name })
+            result.push({ id: e.id, theme: e.theme, message: e.message, date_create: e.date_create, date_end: e.date_end, client_name: e.client.name, developer_name: e.developer.name, status_name: e.statusTask.name, developer_id: e.developer.id })
         }
         return result;
     }
