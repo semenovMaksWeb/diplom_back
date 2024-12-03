@@ -22,7 +22,7 @@ export class TaskController {
         @Req() req: any,
         @Body() taskCreateDTO: TaskCreateDTO
     ) {
-        if (req.user.isDeveloper) {
+        if (req?.user?.isDeveloper) {
             throw new BadRequestException("Администраторы не создают задачи");
         }
         return await this.taskService.create(taskCreateDTO, req.user.user.id);
@@ -60,7 +60,7 @@ export class TaskController {
     }
 
     @UserDecorator(TypeUserDecorator.client)
-    @Put()
+    @Put("/status")
     @ApiQuery({ name: 'status_id', required: true })
     @ApiQuery({ name: 'task_id', required: true })
     public async updateStatus(
