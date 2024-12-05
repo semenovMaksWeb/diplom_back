@@ -45,6 +45,18 @@ export class TaskController {
     }
 
     @UserDecorator(TypeUserDecorator.client)
+    @Get("/id")
+    @ApiQuery({ name: 'id', required: true })
+    public async getId(
+        @Query("id")
+        id?: string
+    ) {
+        const resBd = await this.taskService.getId(+id);
+        return await this.taskService.convertTask([resBd])[0];
+    }
+
+
+    @UserDecorator(TypeUserDecorator.client)
     @Get()
     @ApiQuery({ name: 'status_id', required: false })
     @ApiQuery({ name: 'developer_id', required: false })

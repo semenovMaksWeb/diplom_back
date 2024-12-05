@@ -9,9 +9,10 @@ export class StatusTaskController {
         private readonly statusTaskService: StatusTaskService
     ) { }
 
+    @ApiQuery({ name: 'id', required: false })
     @Get()
     public async test(
-        @Query("id") id: string
+         @Query("id") id: string
     ) {
         if (id) {
             return await this.statusTaskService.getId(id);
