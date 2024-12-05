@@ -75,7 +75,9 @@ export class TaskService {
                 this.checkTaskStatus(taks, 4, "Нельзя изменить статус задачи на 'Отмененна', если она в статусе 'Выполнена'");
                 break;
         }
-        console.log(taskId);        
+        console.log(taskId);
+        console.log(statusId);
+
         return await this.taskRepository.save({ id: taskId, statusTask: { id: statusId } })
     }
 
