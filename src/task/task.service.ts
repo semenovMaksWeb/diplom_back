@@ -106,7 +106,7 @@ export class TaskService {
     // проверка что пользователь клиент
     private checkClientTask(taks: TaskEntity, userId: string) {
         if (taks.client.id != userId) {
-            throw new BadRequestException("Только автор задачи может отметить выполненную задачу");
+            throw new BadRequestException("Только автор задачи может отметить задачу");
         }
     }
 
