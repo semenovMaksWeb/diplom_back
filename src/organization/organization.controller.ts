@@ -1,10 +1,11 @@
 
-import { Body, Controller, Get, Headers, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ContractService } from './organization.service';
 import { OrganizationCreateDTO } from './dto/organization.create.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { TypeUserDecorator, UserDecorator } from 'src/lib/decorator/user.decorator';
+import { OrganizationUpdateDTO } from './dto/organization.update.dto';
 
 @ApiTags('organization')
 @Controller("organization")
@@ -19,6 +20,12 @@ export class ContractController {
     @Post()
     public async save(@Body() organizationCreateDTO: OrganizationCreateDTO) {
         return await this.contractService.create(organizationCreateDTO);
+    }
+
+    @UserDecorator(TypeUserDecorator.developer)
+    @Put()
+    public async update(@Body() organizationUpdateDTO: OrganizationUpdateDTO) {
+        return await this.contractService.create(organizationUpdateDTO);
     }
 
     @UserDecorator(TypeUserDecorator.developer)

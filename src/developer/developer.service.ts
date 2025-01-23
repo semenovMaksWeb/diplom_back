@@ -21,6 +21,11 @@ export class DeveloperService {
         developerCreateDTO.password = await this.authService.hashPassword(developerCreateDTO.password);
         return await this.developerRepository.save(developerCreateDTO);
     }
+
+    public async update(active: boolean) {
+        return await this.developerRepository.save({ active });
+    }
+
     public async get() {
         return await this.developerRepository.find({ select: ["id", "name", "surname", "patronymic", "telephone"] });
     }
