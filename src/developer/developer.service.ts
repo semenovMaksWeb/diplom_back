@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeveloperCreateDTO } from './dto/developer.create.dto';
 import { AuthService } from 'src/auth/auth.service';
+import { UserUpdateActiveDTO } from 'src/lib/dto/user.update.active.dto';
 
 @Injectable()
 export class DeveloperService {
@@ -22,12 +23,12 @@ export class DeveloperService {
         return await this.developerRepository.save(developerCreateDTO);
     }
 
-    public async update(active: boolean) {
-        return await this.developerRepository.save({ active });
+    public async update(userUpdateActive: UserUpdateActiveDTO) {
+        return await this.developerRepository.save({ id: userUpdateActive.id, active: userUpdateActive.active });
     }
 
     public async get() {
-        return await this.developerRepository.find({ select: ["id", "name", "surname", "patronymic", "telephone"] });
+        return await this.developerRepository.find({ select: ["id", "name", "surname", "patronymic", "telephone", "active"] });
     }
     public async findTflAndPassword(telephone: string, password: string) {
         const user = await this.developerRepository.findOne({
