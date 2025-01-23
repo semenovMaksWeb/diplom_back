@@ -44,7 +44,7 @@ export class ClientService {
 
     public async findTflAndPassword(telephone: string, password: string) {
         const user = await this.clientRepository.findOne({
-            where: { telephone: telephone, }
+            where: { telephone: telephone, active: true, organization: { active: true } }
         })
         if (user && await this.authService.checkPassword(password, user.password)) {
             return user;

@@ -32,7 +32,7 @@ export class DeveloperService {
     }
     public async findTflAndPassword(telephone: string, password: string) {
         const user = await this.developerRepository.findOne({
-            where: { telephone: telephone }
+            where: { telephone: telephone, active: true }
         });
         if (user && await this.authService.checkPassword(password, user.password)) {
             return user;
