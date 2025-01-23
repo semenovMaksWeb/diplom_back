@@ -19,12 +19,22 @@ export class ClientService {
         return await this.clientRepository.save(clientCreateDTO);
     }
 
+    public convertClient(taskEntity: ClientEntity[]) {
+        const result = [];
+        for (const e of taskEntity) {
+            result.push({ id: e.id, name: e.name, surname: e.surname, patronymic: e.patronymic, telephone: e.telephone, name_organization: e.organization.name, active_organization: e.organization.active })
+        }
+        return result;
+    }
+
     public async getId(id: string): Promise<ClientEntity> {
-        return await this.clientRepository.findOne({ where: { id }, select: ["id", "name", "surname", "patronymic", "telephone"] });
+        const resultBd = await this.clientRepository.findOne({ where: { id }, select: ["id", "name", "surname", "patronymic", "telephone", "organization"], relations: ["organization"] });
+        return this.convertClient([resultBd])[0];
     }
 
     public async get(): Promise<ClientEntity[]> {
-        return await this.clientRepository.find({ select: ["id", "name", "surname", "patronymic", "telephone"] });
+        const resultBd = await this.clientRepository.find({ select: ["id", "name", "surname", "patronymic", "telephone", "organization"], relations: ["organization"] });
+        return this.convertClient(resultBd);
     }
     public async findTflAndPassword(telephone: string, password: string) {
         const user = await this.clientRepository.findOne({

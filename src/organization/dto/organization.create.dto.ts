@@ -1,8 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
-export class ContractCreateDTO {
+export class OrganizationCreateDTO {
     @IsNotEmpty()
     @ApiProperty()
-    clientId: string;
+    name: string;
+
+    @IsNotEmpty()
+    @ApiProperty()
+    active: boolean;
 }

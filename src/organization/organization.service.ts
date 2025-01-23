@@ -1,0 +1,22 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Raw, Repository } from 'typeorm';
+import { OrganizationEntity } from './organization.entity';
+import { OrganizationCreateDTO } from './dto/organization.create.dto';
+
+@Injectable()
+export class ContractService {
+    constructor(
+        @InjectRepository(OrganizationEntity)
+        private contractRepository: Repository<OrganizationEntity>,
+    ) { }
+
+    public async create(organizationCreateDTO: OrganizationCreateDTO) {
+        return await this.contractRepository.save(organizationCreateDTO);
+    }
+
+
+    public async get(active: boolean = true) {
+        return await this.contractRepository.find({ where: { active: active } });
+    }
+}   
