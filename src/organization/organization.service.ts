@@ -22,6 +22,9 @@ export class ContractService {
 
 
     public async get(active: boolean = true) {
-        return await this.contractRepository.find({ where: { active: active } });
+        if (active) {
+            return await this.contractRepository.find({ where: { active: active } });
+        }
+        return await this.contractRepository.find();
     }
 }   

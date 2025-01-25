@@ -39,7 +39,7 @@ export class ClientService {
     }
 
     public async update(userUpdateActive: UserUpdateActiveDTO) {
-        return await this.clientRepository.save({ id: userUpdateActive.id, active: userUpdateActive.active });
+        return await this.clientRepository.update(userUpdateActive.id, { active: userUpdateActive.active });
     }
 
     public async findTflAndPassword(telephone: string, password: string) {
