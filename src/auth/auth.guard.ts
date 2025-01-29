@@ -34,7 +34,7 @@ export class AuthGuard implements CanActivate {
       throw new ForbiddenException("Не валидный токен");
     }
 
-    if (typeUser == TypeUserDecorator.developer && !resp?.isDeveloper) {
+    if (typeUser == TypeUserDecorator.executor && !resp?.isExecutor) {
       throw new ForbiddenException("У вас нет прав на эти действия");
     }
     request.user = resp;

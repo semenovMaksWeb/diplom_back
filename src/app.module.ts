@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TaskModule } from './task/task.module';
 import { StatusTaskModule } from './statusTask/statusTask.module';
-import { DeveloperModule } from './developer/developer.module';
+import { ExecutorModule } from './executor/executor.module';
 import { ContractModule } from './organization/organization.module';
 import { DatabaseConfig } from './lib/config/database.config';
 import { ConfigModule } from '@nestjs/config';
@@ -16,7 +16,7 @@ import { ConfigModule } from '@nestjs/config';
     TypeOrmModule.forRoot(DatabaseConfig),
     TaskModule,
     StatusTaskModule,
-    DeveloperModule,
+    ExecutorModule,
     ContractModule,
     ClientModule,
   ],

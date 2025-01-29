@@ -22,26 +22,26 @@ export class TaskController {
         @Req() req: any,
         @Body() taskCreateDTO: TaskCreateDTO
     ) {
-        if (req?.user?.isDeveloper) {
-            throw new BadRequestException("Администраторы не создают задачи");
+        if (req?.user?.isExecutor) {
+            throw new BadRequestException("Испольнители не создают задачи");
         }
         return await this.taskService.create(taskCreateDTO, req.user.user.id);
     }
 
-    @UserDecorator(TypeUserDecorator.developer)
+    @UserDecorator(TypeUserDecorator.executor)
     @Get("/all")
     @ApiQuery({ name: 'status_id', required: false })
     @ApiQuery({ name: 'client_id', required: false })
-    @ApiQuery({ name: 'developer_id', required: false })
+    @ApiQuery({ name: 'executor_id', required: false })
     public async getAll(
         @Query("status_id")
         statusId?: string,
         @Query("client_id")
         clientId?: string,
-        @Query("developer_id")
-        developerId?: string
+        @Query("executor_id")
+        executorId?: string
     ) {
-        return await this.taskService.getAll(+statusId, clientId, developerId);
+        return await this.taskService.getAll(+statusId, clientId, executorId);
     }
 
     @UserDecorator(TypeUserDecorator.client)
@@ -59,16 +59,16 @@ export class TaskController {
     @UserDecorator(TypeUserDecorator.client)
     @Get()
     @ApiQuery({ name: 'status_id', required: false })
-    @ApiQuery({ name: 'developer_id', required: false })
+    @ApiQuery({ name: 'executor_id', required: false })
     public async get(
         @Req() req: any,
         @Query("status_id")
         statusId?: string,
-        @Query("developer_id")
-        developerId?: string,
+        @Query("executor_id")
+        executorId?: string,
     ) {
         const user: ClientEntity = req?.user.user;
-        return await this.taskService.get(+statusId, user.id, developerId);
+        return await this.taskService.get(+statusId, user.id, executorId);
     }
 
     @UserDecorator(TypeUserDecorator.client)

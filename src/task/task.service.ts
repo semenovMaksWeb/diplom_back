@@ -16,7 +16,7 @@ export class TaskService {
     public convertTask(taskEntity: TaskEntity[]) {
         const result = [];
         for (const e of taskEntity) {
-            result.push({ id: e.id, theme: e.theme, message: e.message, date_create: e.date_create, date_end: e.date_end, client_name: e.client.name, developer_name: e.developer.name, status_name: e.statusTask.name, developer_id: e.developer.id })
+            result.push({ id: e.id, theme: e.theme, message: e.message, date_create: e.date_create, date_end: e.date_end, client_name: e.client.name, developer_name: e.executor.name, status_name: e.statusTask.name, executor_id: e.executor.id })
         }
         return result;
     }
@@ -25,7 +25,7 @@ export class TaskService {
         const taskEntity = {
             statusTask: { id: 1 },
             client: { id: userId },
-            developer: { id: taskCreateDTO.developer_id },
+            executor: { id: taskCreateDTO.executor_id },
             message: taskCreateDTO.message,
             theme: taskCreateDTO.message
         }
@@ -34,18 +34,18 @@ export class TaskService {
         return await this.taskRepository.save(taskEntity);
     }
 
-    public async getAll(statusId: number, clientId: string, developerId: string) {
+    public async getAll(statusId: number, clientId: string, executorId: string) {
         const resBd = await this.taskRepository.find({
-            relations: ["client", "developer", "statusTask"],
-            where: this.genetatorWhereGet(statusId, clientId, developerId)
+            relations: ["client", "executor", "statusTask"],
+            where: this.genetatorWhereGet(statusId, clientId, executorId)
         });
         return this.convertTask(resBd);
     }
 
-    public async get(statusId: number, clientId: string, developerId: string) {
+    public async get(statusId: number, clientId: string, executorId: string) {
         const resBd = await this.taskRepository.find({
-            relations: ["client", "developer", "statusTask"],
-            where: this.genetatorWhereGet(statusId, clientId, developerId)
+            relations: ["client", "executor", "statusTask"],
+            where: this.genetatorWhereGet(statusId, clientId, executorId)
         });
         return this.convertTask(resBd);
     }
@@ -59,10 +59,10 @@ export class TaskService {
             case 1:
                 throw new BadRequestException("Нельзя изменить статус задачи на Создана");
             case 2:
-                this.checkDeveloperTask(taks, userId)
+                this.checkExecutorTask(taks, userId)
                 break;
             case 3:
-                this.checkDeveloperTask(taks, userId)
+                this.checkExecutorTask(taks, userId)
                 this.checkNotTaskStatus(taks, 2, "Нельзя изменить статус задачи на 'в проверке', если она не в статусе 'В работe'")
                 break;
             case 4:
@@ -97,8 +97,8 @@ export class TaskService {
 
 
     // проверка что пользователь разработчик
-    private checkDeveloperTask(taks: TaskEntity, userId: string) {
-        if (taks.developer.id != userId) {
+    private checkExecutorTask(taks: TaskEntity, userId: string) {
+        if (taks.executor.id != userId) {
             throw new BadRequestException("Только испольнитель может взять задачу в работу");
         }
     }
@@ -112,13 +112,13 @@ export class TaskService {
 
     public async getId(id: number) {
         return await this.taskRepository.findOne({
-            relations: ["client", "developer", "statusTask"],
+            relations: ["client", "executor", "statusTask"],
             where: { id: id }
         });
     }
 
 
-    private genetatorWhereGet(statusId: number, clientId: string, developerId: string) {
+    private genetatorWhereGet(statusId: number, clientId: string, executorId: string) {
         const where: any = {};
         if (!Number.isNaN(statusId)) {
             where.statusTask = { id: statusId }
@@ -126,8 +126,8 @@ export class TaskService {
         if (!Number.isNaN(clientId)) {
             where.client = { id: clientId }
         }
-        if (!Number.isNaN(developerId)) {
-            where.developer = { id: developerId }
+        if (!Number.isNaN(executorId)) {
+            where.executor = { id: executorId }
         }
         return where;
     }
@@ -137,7 +137,7 @@ export class TaskService {
             {
                 id: taskUpdateDTO.id,
                 theme: taskUpdateDTO.theme,
-                developer: { id: taskUpdateDTO.developer_id },
+                executor: { id: taskUpdateDTO.executor_id },
                 message: taskUpdateDTO.message
             }
         )

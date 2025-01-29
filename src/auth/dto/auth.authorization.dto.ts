@@ -8,7 +8,7 @@ export class AuthAuthorizationDTO {
 
     @IsNotEmpty()
     @ApiProperty()
-    isDeveloper: boolean;
+    isExecutor: boolean;
 
     @IsNotEmpty()
     @ApiProperty()

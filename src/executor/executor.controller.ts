@@ -1,38 +1,38 @@
 import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { DeveloperService } from './developer.service';
-import { DeveloperCreateDTO } from './dto/developer.create.dto';
+import { ExecutorService } from './executor.service';
+import { ExecutorCreateDTO } from './dto/executor.create.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UserDecorator, TypeUserDecorator } from 'src/lib/decorator/user.decorator';
 import { UserUpdateActiveDTO } from 'src/lib/dto/user.update.active.dto';
 
-@ApiTags("developer")
-@Controller("developer")
+@ApiTags("executor")
+@Controller("executor")
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
-export class DeveloperController {
+export class ExecutorController {
     constructor(
-        private readonly developerService: DeveloperService
+        private readonly ExecutorService: ExecutorService
     ) { }
 
     @Post()
-    @UserDecorator(TypeUserDecorator.developer)
+    @UserDecorator(TypeUserDecorator.executor)
     public async create(
-        @Body() developerCreateDTO: DeveloperCreateDTO
+        @Body() executorCreateDTO: ExecutorCreateDTO
     ) {
-        return await this.developerService.create(developerCreateDTO)
+        return await this.ExecutorService.create(executorCreateDTO)
     }
 
-        @UserDecorator(TypeUserDecorator.developer)
+        @UserDecorator(TypeUserDecorator.executor)
         @Put()
         public async updated(@Body() userUpdateActive: UserUpdateActiveDTO) {
-            return await this.developerService.update(userUpdateActive);
+            return await this.ExecutorService.update(userUpdateActive);
         }
     
 
     @UserDecorator(TypeUserDecorator.client)
     @Get()
     public async get() {
-        return await this.developerService.get();
+        return await this.ExecutorService.get();
     }
 }

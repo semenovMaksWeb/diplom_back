@@ -1,7 +1,7 @@
 import { SetMetadata } from '@nestjs/common';
 
 export enum TypeUserDecorator {
-    developer = "developer",
+    executor = "executor",
     client = "client"
 }
 

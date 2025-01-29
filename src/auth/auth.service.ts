@@ -2,7 +2,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { ForbiddenException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { ClientService } from 'src/client/client.service';
-import { DeveloperService } from 'src/developer/developer.service';
+import { ExecutorService } from 'src/executor/executor.service';
 import { AuthAuthorizationDTO } from './dto/auth.authorization.dto';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
@@ -13,8 +13,8 @@ export class AuthService {
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
         @Inject(forwardRef(() => ClientService))
         private readonly clientService: ClientService,
-        @Inject(forwardRef(() => DeveloperService))
-        private readonly developerService: DeveloperService
+        @Inject(forwardRef(() => ExecutorService))
+        private readonly ExecutorService: ExecutorService
     ) { }
 
     public async getUser(token: any) {
@@ -29,8 +29,8 @@ export class AuthService {
         await this.cacheManager.del(token);
     }
 
-    private generatorToken(tlf: string, password: string, id: number, isDeveloper: boolean): string {
-        const string = `${new Date()} ${tlf} ${password} ${id} ${isDeveloper}}`;
+    private generatorToken(tlf: string, password: string, id: number, isExecutor: boolean): string {
+        const string = `${new Date()} ${tlf} ${password} ${id} ${isExecutor}}`;
         const token = jwt.sign(string, process.env.JWT_SECRET_KEY);
         return token;
     }
@@ -38,14 +38,14 @@ export class AuthService {
     public async authorization(authAuthorizationDTO: AuthAuthorizationDTO) {
         let user;
 
-        if (authAuthorizationDTO.isDeveloper) {
-            user = await this.developerService.findTflAndPassword(
+        if (authAuthorizationDTO.isExecutor) {
+            user = await this.ExecutorService.findTflAndPassword(
                 authAuthorizationDTO.telephone,
                 authAuthorizationDTO.password
             );
         }
 
-        if (!authAuthorizationDTO.isDeveloper) {
+        if (!authAuthorizationDTO.isExecutor) {
             user = await this.clientService.findTflAndPassword(
                 authAuthorizationDTO.telephone,
                 authAuthorizationDTO.password
@@ -60,9 +60,9 @@ export class AuthService {
             authAuthorizationDTO.telephone,
             authAuthorizationDTO.password,
             user.id,
-            authAuthorizationDTO.isDeveloper
+            authAuthorizationDTO.isExecutor
         );
-        await this.setToken(token, { user, isDeveloper: authAuthorizationDTO.isDeveloper });
+        await this.setToken(token, { user, isExecutor: authAuthorizationDTO.isExecutor });
         return token;
     }
 

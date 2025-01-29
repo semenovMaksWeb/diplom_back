@@ -1,5 +1,5 @@
 import { ClientEntity } from "src/client/client.entity";
-import { DeveloperEntity } from "src/developer/developer.entity";
+import { ExecutorEntity } from "src/executor/executor.entity";
 import { StatusTaskEntity } from "src/statusTask/statusTask.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -18,9 +18,9 @@ export class TaskEntity {
     @JoinColumn({ name: "client_id" })
     client: ClientEntity
 
-    @ManyToOne(() => DeveloperEntity, (developer) => developer.id)
-    @JoinColumn({ name: "developer_id" })
-    developer: DeveloperEntity
+    @ManyToOne(() => ExecutorEntity, (executor) => executor.id)
+    @JoinColumn({ name: "executor_id" })
+    executor: ExecutorEntity
 
     @ManyToOne(() => StatusTaskEntity, (statusTask) => statusTask.id)
     @JoinColumn({ name: "status_task_id" })

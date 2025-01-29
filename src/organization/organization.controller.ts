@@ -16,19 +16,19 @@ export class ContractController {
         private readonly contractService: ContractService
     ) { }
 
-    @UserDecorator(TypeUserDecorator.developer)
+    @UserDecorator(TypeUserDecorator.executor)
     @Post()
     public async save(@Body() organizationCreateDTO: OrganizationCreateDTO) {
         return await this.contractService.create(organizationCreateDTO);
     }
 
-    @UserDecorator(TypeUserDecorator.developer)
+    @UserDecorator(TypeUserDecorator.executor)
     @Put()
     public async update(@Body() organizationUpdateDTO: OrganizationUpdateDTO) {
         return await this.contractService.create(organizationUpdateDTO);
     }
 
-    @UserDecorator(TypeUserDecorator.developer)
+    @UserDecorator(TypeUserDecorator.executor)
     @Get()
     @ApiQuery({ name: 'active', required: false })
     public async get(

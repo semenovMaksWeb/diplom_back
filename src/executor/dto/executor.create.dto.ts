@@ -1,3 +1,3 @@
 import { UserCreateDTO } from "src/lib/dto/user.create.dto";
 
-export class DeveloperCreateDTO extends UserCreateDTO { }
+export class ExecutorCreateDTO extends UserCreateDTO { }

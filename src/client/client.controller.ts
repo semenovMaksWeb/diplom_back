@@ -16,20 +16,20 @@ export class ClientController {
         private readonly clientService: ClientService
     ) { }
 
-    @UserDecorator(TypeUserDecorator.developer)
+    @UserDecorator(TypeUserDecorator.executor)
     @Post()
     public async create(@Body() clientCreateDTO: ClientCreateDTO) {
         return await this.clientService.create(clientCreateDTO);
     }
 
-    @UserDecorator(TypeUserDecorator.developer)
+    @UserDecorator(TypeUserDecorator.executor)
     @Get()
     public async get() {
         return await this.clientService.get();
     }
 
 
-    @UserDecorator(TypeUserDecorator.developer)
+    @UserDecorator(TypeUserDecorator.executor)
     @Put()
     public async updated(@Body() userUpdateActive: UserUpdateActiveDTO) {
         return await this.clientService.update(userUpdateActive);
