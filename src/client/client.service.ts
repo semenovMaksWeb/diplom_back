@@ -16,8 +16,16 @@ export class ClientService {
     ) { }
 
     public async create(clientCreateDTO: ClientCreateDTO) {
-        clientCreateDTO.password = await this.authService.hashPassword(clientCreateDTO.password);
-        return await this.clientRepository.save(clientCreateDTO);
+        const clientEntity = {
+            name: clientCreateDTO.name,
+            password: await this.authService.hashPassword(clientCreateDTO.password),
+            organization: { id: clientCreateDTO.clientOrganizationId },
+            patronymic: clientCreateDTO.patronymic,
+            surname: clientCreateDTO.surname,
+            telephone: clientCreateDTO.telephone,
+        }
+
+        return await this.clientRepository.save(clientEntity);
     }
 
     public convertClient(taskEntity: ClientEntity[]) {
@@ -46,6 +54,8 @@ export class ClientService {
         const user = await this.clientRepository.findOne({
             where: { telephone: telephone, active: true, organization: { active: true } }
         })
+        console.log(user);
+
         if (user && await this.authService.checkPassword(password, user.password)) {
             return user;
         }
