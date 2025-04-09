@@ -23,7 +23,7 @@ export class ClientService {
     public convertClient(taskEntity: ClientEntity[]) {
         const result = [];
         for (const e of taskEntity) {
-            result.push({ id: e.id, name: e.name, surname: e.surname, patronymic: e.patronymic, telephone: e.telephone, name_organization: e.organization.name, active_organization: e.organization.active, active: e.active })
+            result.push({ id: e.id, name: e.name, surname: e.surname, patronymic: e.patronymic, telephone: e.telephone, name_organization: e.organization?.name, active_organization: e.organization?.active, active: e.active })
         }
         return result;
     }
