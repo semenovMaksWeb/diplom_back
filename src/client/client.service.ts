@@ -54,7 +54,6 @@ export class ClientService {
         const user = await this.clientRepository.findOne({
             where: { telephone: telephone, active: true, organization: { active: true } }
         })
-        console.log(user);
 
         if (user && await this.authService.checkPassword(password, user.password)) {
             return user;

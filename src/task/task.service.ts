@@ -27,10 +27,9 @@ export class TaskService {
             client: { id: userId },
             executor: { id: taskCreateDTO.executor_id },
             message: taskCreateDTO.message,
-            theme: taskCreateDTO.message
+            theme: taskCreateDTO.theme
         }
 
-        console.log(taskEntity);
         return await this.taskRepository.save(taskEntity);
     }
 
@@ -75,9 +74,6 @@ export class TaskService {
                 this.checkTaskStatus(taks, 4, "Нельзя изменить статус задачи на 'Отмененна', если она в статусе 'Выполнена'");
                 break;
         }
-        console.log(taskId);
-        console.log(statusId);
-
         return await this.taskRepository.save({ id: taskId, statusTask: { id: statusId } })
     }
 
@@ -129,6 +125,9 @@ export class TaskService {
         if (!Number.isNaN(executorId)) {
             where.executor = { id: executorId }
         }
+
+        console.log(where);
+
         return where;
     }
 
