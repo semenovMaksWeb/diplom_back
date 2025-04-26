@@ -3,7 +3,7 @@ import { ApiQuery, ApiTags } from "@nestjs/swagger";
 import { StatusTaskService } from "./statusTask.service";
 
 @ApiTags("StatusTask")
-@Controller()
+@Controller("StatusTask")
 export class StatusTaskController {
     constructor(
         private readonly statusTaskService: StatusTaskService
