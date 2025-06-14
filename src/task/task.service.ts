@@ -51,7 +51,7 @@ export class TaskService {
 
     public async updateStatus(statusId: number, taskId: number, userId: string) {
         const taks: TaskEntity = await this.getId(taskId);
-        if (taks.statusTask.id == taskId) {
+        if (taks.statusTask.id == statusId) {
             throw new BadRequestException("Текущий статус задачи уже указан");
         }
         switch (statusId) {

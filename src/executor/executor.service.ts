@@ -22,7 +22,7 @@ export class ExecutorService {
 
     public async update(userUpdateActive: UserUpdateActiveDTO) {
         return await this.executorRepository.save({ id: userUpdateActive.id, active: userUpdateActive.active });
-    }
+    }   
 
     public async get() {
         return await this.executorRepository.find({ select: ["id", "name", "surname", "patronymic", "telephone", "active"] });
